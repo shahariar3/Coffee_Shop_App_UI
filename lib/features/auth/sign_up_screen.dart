@@ -1,21 +1,22 @@
 import 'package:dark_light/app/assets_links.dart';
-import 'package:dark_light/features/auth/sign_up_screen.dart';
+import 'package:dark_light/features/auth/sign_in_screen.dart';
+import 'package:dark_light/features/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _isPasswordVisisble = false;
+  bool _isPasswordVisible = false;
 
   @override
   void dispose() {
@@ -67,7 +68,7 @@ class _SignInScreenState extends State<SignInScreen> {
             ),
             SizedBox(height: 30),
             Text(
-              'Sign In',
+              'Sign Up',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 letterSpacing: 2,
@@ -75,7 +76,7 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
             ),
             Text(
-              'We\'ve already met!',
+              'Let\'s create you an account.',
               style: GoogleFonts.gabarito(
                 fontWeight: FontWeight.bold,
                 letterSpacing: 3,
@@ -115,7 +116,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                   ),
                   TextFormField(
-                    obscureText: _isPasswordVisisble,
+                    obscureText: _isPasswordVisible,
                     controller: _passwordController,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -139,15 +140,50 @@ class _SignInScreenState extends State<SignInScreen> {
                       suffixIcon: IconButton(
                         onPressed: () {
                           setState(() {
-                            _isPasswordVisisble = !_isPasswordVisisble;
+                            _isPasswordVisible = !_isPasswordVisible;
                           });
                         },
-                        icon: _isPasswordVisisble
+                        icon: _isPasswordVisible
                             ? Icon(Icons.visibility_off)
                             : Icon(Icons.visibility),
                       ),
                     ),
                   ),
+                  TextFormField(
+                    obscureText: _isPasswordVisible,
+                    controller: _passwordController,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Color(0xff55433C),
+                    ),
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.password),
+                      label: SizedBox(
+                        width: 150,
+                        child: Row(
+                          children: [
+                            Text('RE-PASSWORD'),
+                            Text(
+                              ' *',
+                              style: TextStyle(color: Colors.redAccent),
+                            ),
+                          ],
+                        ),
+                      ),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                        icon: _isPasswordVisible
+                            ? Icon(Icons.visibility_off)
+                            : Icon(Icons.visibility),
+                      ),
+                    ),
+                  ),
+
                   TextButton(
                     onPressed: () {},
                     child: Text(
@@ -159,16 +195,13 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 30),
+                  SizedBox(height: 16),
                   InkWell(
                     onTap: () {
-                      ScaffoldMessenger.of(context).clearSnackBars();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            'Business Logic has not been implemented for this app',
-                          ),
-                        ),
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                        (Route route) => false,
                       );
                     },
                     child: Container(
@@ -187,7 +220,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         children: [
                           Spacer(),
                           Text(
-                            'Sign In',
+                            'Sign Up',
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -206,13 +239,13 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        'Don\'t have an account?',
+                        'Already have an account?',
                         style: TextStyle(fontSize: 16),
                       ),
                       TextButton(
@@ -220,12 +253,12 @@ class _SignInScreenState extends State<SignInScreen> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SignUpScreen(),
+                              builder: (context) => SignInScreen(),
                             ),
                           );
                         },
                         child: Text(
-                          "Sign Up",
+                          "Sign In",
                           style: TextStyle(
                             decoration: TextDecoration.underline,
                             decorationColor: Color(0xffA97C37),
