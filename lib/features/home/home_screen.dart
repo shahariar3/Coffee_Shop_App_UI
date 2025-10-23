@@ -1,4 +1,5 @@
 import 'package:dark_light/app/assets_links.dart';
+import 'package:dark_light/features/home/widgets/item_selection_chip_widget.dart';
 import 'package:dark_light/features/home/widgets/search_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -13,6 +14,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final SearchController controller = SearchController();
   String? selectedItem;
+  int currentCategory = 0;
+
+  late List<CategoryChoiceChipWidget> categoryChoiceChipWidgetList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -86,11 +90,44 @@ class _HomeScreenState extends State<HomeScreen> {
                     selectedItem = item;
                   },
                 ),
+                SizedBox(height: 14),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    spacing: 4,
+                    children: [
+                      CategoryChoiceChipWidget(
+                        itemImageLink: AssetsLinks.coffeeCup,
+                        itemName: "Coffee",
+                        onSelect: onItemCategorySelect,
+                      ),
+                      CategoryChoiceChipWidget(
+                        itemImageLink: AssetsLinks.soda,
+                        itemName: "Soda",
+                        onSelect: onItemCategorySelect,
+                      ),
+                      CategoryChoiceChipWidget(
+                        itemImageLink: AssetsLinks.redWine,
+                        itemName: "Red Wine",
+                        onSelect: onItemCategorySelect,
+                      ),
+                      CategoryChoiceChipWidget(
+                        itemImageLink: AssetsLinks.teaCup,
+                        itemName: "Tea",
+                        onSelect: onItemCategorySelect,
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
         ],
       ),
     );
+  }
+
+  void onItemCategorySelect(CategoryChoiceChipWidget currentItem) {
+    //currentItem.
   }
 }

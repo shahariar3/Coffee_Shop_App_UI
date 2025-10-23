@@ -18,7 +18,7 @@ class SearchBarWidget extends StatelessWidget {
       searchController: controller,
       builder: (context, controller) {
         return SearchBar(
-          hintText: controller.text,
+          hintText: controller.text.isNotEmpty ? controller.text : "Coffee, Soda, Tea, Snakes",
           trailing: [
             IconButton(
               onPressed: () {
@@ -87,12 +87,12 @@ class SearchBarWidget extends StatelessWidget {
           backgroundColor: WidgetStatePropertyAll(Colors.white),
           elevation: WidgetStatePropertyAll(0),
           side: WidgetStatePropertyAll(
-            BorderSide(width: 2, color: Color(0xff603F26)),
+            BorderSide(width: 0, color: Color(0xff603F26)),
           ),
           padding: WidgetStatePropertyAll(
-            EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+            EdgeInsets.only(left: 10),
           ),
-          leading: Icon(Icons.search, size: 30),
+          leading: Icon(Icons.search, size: 30, color: Colors.black54,),
           onTap: () {
             controller.openView();
           },
