@@ -690,7 +690,7 @@
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
-
+/* M2PJ-R68K-WOKH-XCN5-4UA4-GXHB */
 /* Begin XCConfigurationList section */
 		331C8087294A63A400263BE5 /* Build configuration list for PBXNativeTarget "RunnerTests" */ = {
 			isa = XCConfigurationList;

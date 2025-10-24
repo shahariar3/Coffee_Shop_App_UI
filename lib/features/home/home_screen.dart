@@ -12,6 +12,16 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int? selectedCategoryIndex; // which chip is selected (or null)
+
+  final List<String> categoryNames = ["Coffee", "Soda", "Red Wine", "Tea"];
+  final List<String> categoryImageLinks = [
+    AssetsLinks.coffeeCup,
+    AssetsLinks.soda,
+    AssetsLinks.redWine,
+    AssetsLinks.teaCup,
+  ];
+
   final SearchController controller = SearchController();
   String? selectedItem;
   int currentCategory = 0;
@@ -94,29 +104,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
-                    spacing: 4,
-                    children: [
-                      CategoryChoiceChipWidget(
-                        itemImageLink: AssetsLinks.coffeeCup,
-                        itemName: "Coffee",
-                        onSelect: onItemCategorySelect,
-                      ),
-                      CategoryChoiceChipWidget(
-                        itemImageLink: AssetsLinks.soda,
-                        itemName: "Soda",
-                        onSelect: onItemCategorySelect,
-                      ),
-                      CategoryChoiceChipWidget(
-                        itemImageLink: AssetsLinks.redWine,
-                        itemName: "Red Wine",
-                        onSelect: onItemCategorySelect,
-                      ),
-                      CategoryChoiceChipWidget(
-                        itemImageLink: AssetsLinks.teaCup,
-                        itemName: "Tea",
-                        onSelect: onItemCategorySelect,
-                      ),
-                    ],
+                    children: List.generate(categoryNames.length, (index) {
+                      return CategoryChoiceChipWidget(
+                        itemImageLink: categoryImageLinks[index],
+                        itemName: categoryNames[index],
+                        isSelected: (selectedCategoryIndex == index),
+                        // <-- you pass selection state
+                        onSelect: () {
+                          setState(() {
+                            selectedCategoryIndex = index;
+                          });
+                          // do extra behavior for this category
+                          print("Category tapped: ${categoryNames[index]}");
+                        },
+                      );
+                    }),
                   ),
                 ),
               ],
@@ -129,5 +131,63 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void onItemCategorySelect(CategoryChoiceChipWidget currentItem) {
     //currentItem.
+  }
+}
+
+class CategoryChoiceChipWidget extends StatelessWidget {
+  const CategoryChoiceChipWidget({
+    super.key,
+    required this.itemName,
+    required this.itemImageLink,
+    required this.isSelected,
+    required this.onSelect,
+  });
+
+  final String itemName;
+  final String itemImageLink;
+  final bool isSelected;
+  final VoidCallback onSelect;
+
+  @override
+  Widget build(BuildContext context) {
+    final selectedColor = const Color(0xff55433C);
+    final backgroundColor = const Color(0xffF5F5F5);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 4),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(30),
+        onTap: onSelect,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 180),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          decoration: BoxDecoration(
+            color: isSelected ? selectedColor : backgroundColor,
+            borderRadius: BorderRadius.circular(30),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ClipOval(
+                child: Image.asset(
+                  itemImageLink,
+                  height: 33,
+                  width: 33,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                itemName,
+                style: TextStyle(
+                  color: isSelected ? Colors.white : Colors.black87,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
